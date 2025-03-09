@@ -15,6 +15,7 @@ on:
         required: false
 
 jobs:
+
   build:
     name: build
     strategy:
@@ -34,6 +35,7 @@ jobs:
       base_image_variant: ${{ matrix.base_variant_name }}
       base_release_date: 2024-11-19
       arch: arm64
+
   upload-zenodo:
     name: Upload to Zenodo
     needs: build
@@ -44,8 +46,13 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.OUTPUT_IMAGE_NAME }}.img.xz
+          name: ${{ env.OUTPUT_IMAGE_NAME }}
           path: ./
+
+      - name: Unzip artifact
+        env:
+          OUTPUT_IMAGE_NAME: ${{ env.OUTPUT_IMAGE_NAME }}
+        run: unzip "$OUTPUT_IMAGE_NAME.zip"
 
       - name: Create Zenodo deposit
         id: create_deposit
@@ -67,9 +74,11 @@ jobs:
           echo "DEPOSIT_ID=$DEPOSIT_ID" >> $GITHUB_ENV
 
       - name: Upload image to Zenodo
+        env:
+          OUTPUT_IMAGE_NAME: ${{ env.OUTPUT_IMAGE_NAME }}
         run: |
           ZENODO_API="https://zenodo.org/api/deposit/depositions/$DEPOSIT_ID/files"
-          FILENAME="${{ env.OUTPUT_IMAGE_NAME }}.img.xz"
+          FILENAME="$OUTPUT_IMAGE_NAME.img.xz"
           curl -s -X POST "$ZENODO_API" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
             -F "file=@$FILENAME"
