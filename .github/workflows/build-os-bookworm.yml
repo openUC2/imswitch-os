@@ -46,18 +46,17 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.OUTPUT_IMAGE_NAME }}
+          name: ${{ needs.build.outputs.image_name }}
           path: ./
 
       - name: Unzip artifact
-        env:
-          OUTPUT_IMAGE_NAME: ${{ env.OUTPUT_IMAGE_NAME }}
-        run: unzip "$OUTPUT_IMAGE_NAME.zip"
+        run: unzip "${{ needs.build.outputs.image_name }}.zip"
 
       - name: Create Zenodo deposit
         id: create_deposit
+        env:
+          ZENODO_API: "https://zenodo.org/api/deposit/depositions"
         run: |
-          ZENODO_API="https://zenodo.org/api/deposit/depositions"
           RESPONSE=$(curl -s -X POST "$ZENODO_API" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
@@ -74,11 +73,9 @@ jobs:
           echo "DEPOSIT_ID=$DEPOSIT_ID" >> $GITHUB_ENV
 
       - name: Upload image to Zenodo
-        env:
-          OUTPUT_IMAGE_NAME: ${{ env.OUTPUT_IMAGE_NAME }}
         run: |
           ZENODO_API="https://zenodo.org/api/deposit/depositions/$DEPOSIT_ID/files"
-          FILENAME="$OUTPUT_IMAGE_NAME.img.xz"
+          FILENAME="${{ needs.build.outputs.image_name }}.img.xz"
           curl -s -X POST "$ZENODO_API" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
             -F "file=@$FILENAME"
