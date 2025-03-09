@@ -47,10 +47,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.image_name }}
-          path: ./
 
-      - name: Unzip artifact
-        run: unzip "${{ needs.build.outputs.image_name }}.zip"
+      - name: List downloaded files
+        run: ls -R
 
       - name: Create Zenodo deposit
         id: create_deposit
