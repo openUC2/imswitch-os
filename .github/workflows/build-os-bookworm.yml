@@ -70,20 +70,23 @@ jobs:
             }')
 
           DEPOSIT_ID=$(echo $RESPONSE | jq -r '.id')
-          echo "DEPOSIT_ID=$DEPOSIT_ID" >> $GITHUB_ENV
+          echo "id=$DEPOSIT_ID" >> $GITHUB_OUTPUT
 
       - name: Upload image to Zenodo
+        env:
+          ZENODO_API: "https://zenodo.org/api/deposit/depositions/${{ steps.create_deposit.outputs.id }}/files"
+          FILENAME: "${{ needs.build.outputs.image_name }}.img.xz"
         run: |
-          ZENODO_API="https://zenodo.org/api/deposit/depositions/$DEPOSIT_ID/files"
-          FILENAME="${{ needs.build.outputs.image_name }}.img.xz"
           curl -s -X POST "$ZENODO_API" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
             -F "file=@$FILENAME"
 
       - name: Publish Zenodo record
+        env:
+          ZENODO_API: "https://zenodo.org/api/deposit/depositions/${{ steps.create_deposit.outputs.id }}/actions/publish"
         run: |
-          curl -s -X POST "https://zenodo.org/api/deposit/depositions/$DEPOSIT_ID/actions/publish" \
+          curl -s -X POST "$ZENODO_API" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}"
 
       - name: Output Zenodo link
-        run: echo "Zenodo record available at https://zenodo.org/record/$DEPOSIT_ID"
+        run: echo "Zenodo record available at https://zenodo.org/record/${{ steps.create_deposit.outputs.id }}"
