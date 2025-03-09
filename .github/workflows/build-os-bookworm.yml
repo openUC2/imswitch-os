@@ -57,6 +57,7 @@ jobs:
           ZENODO_API: "https://zenodo.org/api/deposit/depositions"
         run: |
           RESPONSE=$(curl -s -X POST "$ZENODO_API" \
+            --fail-with-body \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
             --data '{
@@ -77,6 +78,7 @@ jobs:
           FILENAME: "${{ needs.build.outputs.image_name }}.img.xz"
         run: |
           curl -s -X POST "$ZENODO_API" \
+            --fail-with-body \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}" \
             -F "file=@$FILENAME"
 
@@ -85,6 +87,7 @@ jobs:
           ZENODO_API: "https://zenodo.org/api/deposit/depositions/${{ steps.create_deposit.outputs.id }}/actions/publish"
         run: |
           curl -s -X POST "$ZENODO_API" \
+            --fail-with-body \
             -H "Authorization: Bearer ${{ secrets.ZENODO_ACCESS_TOKEN }}"
 
       - name: Output Zenodo link
