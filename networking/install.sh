@@ -37,5 +37,4 @@ curl -fsSL "https://pkgs.tailscale.com/stable/raspbian/$DISTRO_VERSION_CODENAME.
   sudo tee /etc/apt/sources.list.d/tailscale.list
 sudo -E apt-get update -y -o Dpkg::Progress-Fancy=0 # get the list of packages from the docker repo
 sudo -E apt-get install -y -o Dpkg::Progress-Fancy=0 \
-  sudo apt-get install tailscale
-
+  tailscale
