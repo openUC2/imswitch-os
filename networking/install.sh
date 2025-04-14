@@ -31,10 +31,10 @@ fi
 sudo -E apt-get install -y -o Dpkg::Progress-Fancy=0 \
   apt-transport-https
 DISTRO_VERSION_CODENAME="$(. /etc/os-release && echo "$VERSION_CODENAME")"
-curl -fsSL "https://pkgs.tailscale.com/stable/raspbian/$DISTRO_VERSION_CODENAME.gpg" |
-  sudo apt-key add -y -
-curl -fsSL "https://pkgs.tailscale.com/stable/raspbian/$DISTRO_VERSION_CODENAME.list" |
-  sudo tee /etc/apt/sources.list.d/tailscale.list >/dev/null
+curl -fsSL "https://pkgs.tailscale.com/stable/raspbian/$DISTRO_VERSION_CODENAME.noarmor.gpg" |
+  sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+curl -fsSL "https://pkgs.tailscale.com/stable/raspbian/$DISTRO_VERSION_CODENAME.tailscale-keyring.list" |
+  sudo tee /etc/apt/sources.list.d/tailscale.list
 sudo -E apt-get update -y -o Dpkg::Progress-Fancy=0 # get the list of packages from the docker repo
 sudo -E apt-get install -y -o Dpkg::Progress-Fancy=0 \
   sudo apt-get install tailscale
