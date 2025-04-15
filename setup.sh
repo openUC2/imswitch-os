@@ -57,6 +57,14 @@ else
   panic "$description"
 fi
 
+description="configure platform hardware"
+report_starting "$description"
+if "$build_scripts_root"/platform-hardware/config.sh; then
+  report_finished "$description"
+else
+  panic "$description"
+fi
+
 description="install ImSwitch"
 report_starting "$description"
 if "$build_scripts_root"/imswitch/install.sh; then
@@ -91,9 +99,17 @@ else
   panic "$description"
 fi
 
-description="install base OS"
+description="set up USB automount"
 report_starting "$description"
-if "$build_scripts_root"/base-os/install.sh; then
+if "$build_scripts_root"/usb-automount/install.sh; then
+  report_finished "$description"
+else
+  panic "$description"
+fi
+
+description="set up rootfs initialization during boot"
+report_starting "$description"
+if "$build_scripts_root"/init-root/prepare.sh; then
   report_finished "$description"
 else
   panic "$description"

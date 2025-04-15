@@ -1,46 +1,4 @@
 #!/bin/bash -eux
-# The platform hardware configuration is for configuration specific to the underlying compute
-# platform used to run the operating system. Currently the only supported platform hardware is the
-# Raspberry Pi 4 running Raspberry Pi OS 11 or newer.
-# Hopefully, in the future other platforms will also be supported - in which case alternative OS
-# build scripts will be needed for configuration.
-
-# Note: in general, 0 represents "success/yes/selected", while 1 represents "failed/no/unselected",
-# but there is no consistent meaning. Partial documentation of raspi-commands is available at
-# https://www.raspberrypi.com/documentation/computers/configuration.html, but the authoritative
-# reference for commands and their parameters is at
-# https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config . It is discouraged to use
-# raspi-config commands when a reasonable platform-independent alternative exists, because they make
-# it harder for our project to enable running the PlanktoScope software on computers besides the
-# Raspberry Pi. So we should avoid adding more raspi-config commands.
-# From: https://github.com/PlanktoScope/PlanktoScope/blob/5b06bc29746adf73bc4edf31f47c3b5ccc2de805/software/distro/setup/base-os/setup.sh
-if ! command -v raspi-config &> /dev/null; then
-  echo "Warning: raspi-config is unavailable, so no RPi-specific hardware configuration will be applied!"
-  exit 0
-fi
-
-# The following commands enable the SPI and I2C hardware interfaces:
-sudo raspi-config nonint do_spi 0
-sudo raspi-config nonint do_i2c 0
-
-# The following command enables the serial port and serial port console.
-# do_serial_cons and do_serial_hw are needed for Raspberry Pi OS 12 (bookworm) and above, while
-# do_serial is needed for Raspberry Pi OS (bullseye).
-DISTRO_VERSION_ID="$(. /etc/os-release && echo "$VERSION_ID")"
-if [ $DISTRO_VERSION_ID -ge 12 ]; then # Support Raspberry Pi OS 12 (bookworm)
-  sudo raspi-config nonint do_serial_hw 0
-  sudo raspi-config nonint do_serial_cons 0
-else # Support Raspberry Pi OS 11 (bullseye)
-  sudo raspi-config nonint do_serial 0
-fi
-
-# The following command enables the camera on the 32-bit Raspberry Pi OS (ARMv7):
-sudo raspi-config nonint do_camera 0
-# The following command disables legacy camera support so that we can use libcamera:
-sudo raspi-config nonint do_legacy 1
-
-
-
 # Optional: Install filesystem packages for NTFS/exFAT
 sudo apt install -y ntfs-3g exfat-fuse exfatprogs
 
@@ -108,7 +66,6 @@ SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]*", ACTION=="add", ENV{ID_FS_TYPE}=="?*
 # When removed, unmount it
 SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]*", ACTION=="remove", RUN+="/usr/bin/systemd-run --no-block /usr/local/bin/autounmount.sh %k"
 EOF
-
 
 echo "===================================="
 echo "Automount installed."
