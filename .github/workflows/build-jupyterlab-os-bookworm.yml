@@ -1,0 +1,40 @@
+---
+name: build-os-jupyterlab-bookworm
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
+    paths:
+      - '!README.md'
+  pull_request:
+    paths:
+      - '!README.md'
+  merge_group:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: 'Git ref (optional)'
+        required: false
+
+jobs:
+  build:
+    name: build
+    strategy:
+      fail-fast: false
+      matrix:
+        base_variant_name:
+          - lite
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    uses: ./.github/workflows/build-jupyterlab-os.yml
+    secrets: inherit
+    with:
+      name: rpi-uc2
+      base_release_name: bookworm
+      base_image_variant: ${{ matrix.base_variant_name }}
+      base_release_date: 2024-11-19
+      arch: arm64
