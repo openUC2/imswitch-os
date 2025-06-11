@@ -16,3 +16,47 @@ image. However, in general you should only directly copy files into the OS image
 during early boot before forklift runs; otherwise, you should deploy those files via
 [github.com/openUC2/pallet](https://github.com/openUC2/pallet) (for an example of how to do this,
 refer to [PR openUC2/pallet#7](https://github.com/openUC2/pallet/pull/7)).
+
+## Licensing
+
+Any source code provided with this repository is covered by the following information, except where
+otherwise indicated:
+
+**Copyright openUC2 project contributors**
+
+SPDX-License-Identifier: `Apache-2.0`
+
+Thus, you can use the source code provided here under the
+[Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
+
+### Origins
+
+The [github.com/openUC2/imswitch-os](https://github.com/openUC2/imswitch-os) repository was
+initialized as a copy of
+[github.com/forklift-run/rpi-os-demo](https://github.com/forklift-run/rpi-os-demo). The rpi-os-demo
+repository is under copyright of Ethan Li and Forklift project contributors, and its files have been
+copied and used by the imswitch-os repository under the Apache 2.0 License.
+
+The [github.com/forklift/rpi-os-demo](https://github.com/forklift/rpi-os-demo) repository was
+created by Ethan Li as a copy of a subset of original contributions which they had
+donated to [github.com/PlanktoScope/PlanktoScope](https://github.com/PlanktoScope/PlanktoScope). The
+PlanktoScope repository's source code is licensed under the
+[GPL 3.0 License](https://www.gnu.org/licenses/gpl-3.0.en.html); because Ethan has retained
+copyright ownership over their own individual contributions to the PlanktoScope repository (instead
+of assigning copyright to the PlanktoScope project via any legal contract or any
+[work-for-hire arrangement](https://worksmadeforhire.com/) with any employer), Ethan has exercised
+their legal right to make their own contributions available under additional licenses by gathering
+some of their own contributions, copying them into the rpi-os-demo repository, and then making that
+source code available under the Apache 2.0 License and under the Blue Oak Model License 1.0.0
+(SPDX License Identifier: `Apache-2.0 OR BlueOak-1.0.0`).
+
+### Contributions
+
+Contributions to this repository will only be accepted if the contributor has a legal right to
+make the contributed source code available in this repository under this repository's licenses
+(which are listed above). In particular, this means that we cannot accept any contribution you make
+if it includes GPL-licensed source code from
+[github.com/PlanktoScope/PlanktoScope](https://github.com/PlanktoScope/PlanktoScope) and you are not
+the author of that source code in the PlanktoScope repository, or if you otherwise lack the legal
+right (e.g. via copyright ownership) to distribute that source code under this repository's
+licenses.
