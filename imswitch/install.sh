@@ -25,6 +25,9 @@ echo "Install HIK Driver"
 echo "Install Daheng Driver"
 ./install_dahengdriver.sh
 
+echo "Install Python and ImSwitch natively - experimental"
+./install_native.sh
+
 echo "Install Vimba Driver"
 ./install_vimba.sh
 
