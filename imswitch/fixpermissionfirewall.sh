@@ -1,11 +1,7 @@
 #!/bin/bash
 # This script adds a sudoers rule allowing the 'pi' user to run firewall-cmd without a password
 
-# Ensure we are running as root
-if [[ $EUID -ne 0 ]]; then
-   echo "Please run this script as root: sudo $0"
-   exit 1
-fi
+set -euo pipefail
 
 SUDOERS_FILE="/etc/sudoers.d/imswitch-firewall"
 
@@ -16,6 +12,6 @@ pi ALL=(ALL) NOPASSWD: /usr/bin/firewall-cmd
 EOF
 
 # Set correct permissions
-chmod 440 "$SUDOERS_FILE"
+sudo chmod 440 "$SUDOERS_FILE"
 
 echo "Sudoers rule added for 'pi' to run /usr/bin/firewall-cmd without password."
