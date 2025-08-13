@@ -73,6 +73,24 @@ else
   panic "$description"
 fi
 
+description="Fix Permission Network Manager"
+report_starting "$description"
+if "$build_scripts_root"/imswitch/fixpermissionnmcli.sh; then
+  report_finished "$description"
+else
+  panic "$description"
+fi
+
+
+# fixpermissionnmcli.sh
+description="Fix Permission Firewall"
+report_starting "$description"
+if "$build_scripts_root"/imswitch/fixpermissionfirewall.sh; then
+  report_finished "$description"
+else
+  panic "$description"
+fi
+
 # Note: we must install Docker before we perform Forklift container image loading (which requires
 # either Docker or containerd, which is installed by Docker).
 description="install Docker"
