@@ -9,6 +9,8 @@ sudo apt-get update
 sudo apt-get install -y network-manager
   nmcli_path="$(command -v nmcli || echo /usr/bin/nmcli)"
 
+# specify USER_NAME
+USER_NAME="pi"
 echo "Writing sudoers rule for ${USER_NAME} → ${nmcli_path}"
 file="/etc/sudoers.d/nmcli-${USER_NAME}"
 printf '%s ALL=(root) NOPASSWD: %s\n' "${USER_NAME}" "${nmcli_path}" > "${file}"
