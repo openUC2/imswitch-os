@@ -81,8 +81,6 @@ else
   panic "$description"
 fi
 
-
-# fixpermissionnmcli.sh
 description="Fix Permission Firewall"
 report_starting "$description"
 if "$build_scripts_root"/imswitch/fixpermissionfirewall.sh; then
