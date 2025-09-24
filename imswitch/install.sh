@@ -16,8 +16,8 @@ git checkout --quiet "$installer_version"
 # install requirements
 sudo apt-get install -y git curl
 
-echo "Clone ImSwitchConfig"
-./git_clone_imswitchconfig.sh
+# echo "Clone ImSwitchConfig"
+# ./git_clone_imswitchconfig.sh
 
 echo "Install HIK Driver"
 ./install_hikdriver.sh
