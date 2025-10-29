@@ -1,5 +1,5 @@
 Note: this repo has been merged into
-[github.com/openUC2/rpi-imswitch-os](https://github.com/openUC2/rpi-imswitch-os]; development and
+[github.com/openUC2/rpi-imswitch-os](https://github.com/openUC2/rpi-imswitch-os); development and
 maintenance will continue there.
 
 # imswitch-os
